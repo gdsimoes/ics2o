@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>    // stdbool is necessary to use booleans without cs50.h
 
 void print_array(int arr[], int size);
 void swap(int *a, int *b);
@@ -6,28 +7,37 @@ void swap(int *a, int *b);
 int linear_search(int arr[], int size, int elem);
 int binary_search(int arr[], int size, int elem);
 
-void bubbleSort(int arr[], int size);
+void bubble_sort(int arr[], int size);
 
 int main(void)
 {
     int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int unsorted[] = {6, 3, 8, 5, 2, 7, 4, 1};
+    // 3 6 5 2 7 4 1 8
+    // 3 5 2 6 4 1 7 8
 
+    printf("Binary search test:\n");
     printf("%i\n", binary_search(sorted, 8, 7));
     for (int i = 1; i <= 8; i++)
     {
         printf("%i\n", binary_search(sorted, 8, i));
     }
 
+    printf("print_array test:\n");
     print_array(sorted, 8);
     print_array(unsorted, 8);
 
+    printf("swap test:\n");
     int a = 1;
     int b = 2;
-
     swap(&a, &b);
-
     printf("%i %i\n", a, b);
+
+    // printf("Bubble sort test:\n");
+    // bubble_sort(unsorted, 8);
+    // print_array(unsorted, 8);
+    // bubble_sort(sorted, 8);
+    // print_array(sorted, 8);
 
 
 }
@@ -106,11 +116,22 @@ int binary_search(int arr[], int size, int elem)
     return -1;
 }
 
-void bubbleSort(int arr[], int size)
+void bubble_sort(int arr[], int size)
 {
+    bool swapped = false;
     for (int i = 0; i < size - 1; i++)
     {
-
+        for (int j = 0; j < size - 1 - i; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                swap(&arr[j], &arr[j + 1]);
+                swapped = true;
+            }
+        }
+        if (!swapped)
+        {
+            return;
+        }
     }
-    return;
 }
