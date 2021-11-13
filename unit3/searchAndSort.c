@@ -8,13 +8,14 @@ int linear_search(int arr[], int size, int elem);
 int binary_search(int arr[], int size, int elem);
 
 void bubble_sort(int arr[], int size);
+void selection_sort(int arr[], int size);
+void merge_arrays(int arr1[], int size1, int arr2[], int size2, int result[]);
+void merge_sort(int arr[], int size, int result[]);
 
 int main(void)
 {
     int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8};
     int unsorted[] = {6, 3, 8, 5, 2, 7, 4, 1};
-    // 3 6 5 2 7 4 1 8
-    // 3 5 2 6 4 1 7 8
 
     printf("Binary search test:\n");
     printf("%i\n", binary_search(sorted, 8, 7));
@@ -39,7 +40,18 @@ int main(void)
     // bubble_sort(sorted, 8);
     // print_array(sorted, 8);
 
+    // printf("Insertion sort test:\n");
+    // selection_sort(unsorted, 8);
+    // print_array(unsorted, 8);
+    // selection_sort(sorted, 8);
+    // print_array(sorted, 8);
 
+    printf("Merge sort test:\n");
+    int result[8];
+    merge_sort(unsorted, 8, result);
+    print_array(result, 8);
+    merge_sort(sorted, 8, result);
+    print_array(result, 8);
 }
 
 // This function prints all elements of an array in a pretty way
@@ -134,4 +146,63 @@ void bubble_sort(int arr[], int size)
             return;
         }
     }
+}
+
+void selection_sort(int arr[], int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        int min_index = i;
+        for (int j = i + 1; j < size; j++)
+        {
+            if (arr[j] < arr[min_index])
+            {
+                min_index = j;
+            }
+        }
+        swap(&arr[i], &arr[min_index]);
+    }
+}
+
+void merge_arrays(int arr1[], int size1, int arr2[], int size2, int result[])
+{
+    for (int i = 0, j = 0; i + j < size1 + size2;)
+    {
+        if (i == size1)
+        {
+            result[i + j] = arr2[j];
+            j++;
+        }
+        else if (j == size2)
+        {
+            result[i + j] = arr1[i];
+            i++;
+        }
+        else if (arr1[i] <= arr2[j])
+        {
+            result[i + j] = arr1[i];
+            i++;
+        }
+        else
+        {
+            result[i + j] = arr2[j];
+            j++;
+        }
+    }
+}
+
+void merge_sort(int arr[], int size, int result[])
+{
+    if (size == 1)
+    {
+        result[0] = arr[0];
+        return;
+    }
+
+    int result1[size / 2];
+    int result2[size - size / 2];
+
+    merge_sort(arr, size / 2, result1);
+    merge_sort(&arr[size / 2], size - size / 2, result2);
+    merge_arrays(result1, size / 2, result2, size - size / 2, result);
 }
